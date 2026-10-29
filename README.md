@@ -35,9 +35,13 @@
   - `reverse_outcome.py` — 反向概率表（P(holds|outcome)）
   - `diagnose_g2.py` — g2 反向关系诊断（混淆变量 + 机制中间环节）
   - `diagnose_g3.py` — g3 空壳诊断（p 档排序力 + 前因收紧实验）
+  - `scan_g2_threshold.py` — g2 门槛扫描（找 hier_n 最优切分点）
+  - `verify_g2_fix.py` — g2 修复验证（新前因定义下的条件概率）
 - `docs/workflow.md` — 完整工作流详细说明
 - `docs/reverse_outcome_antecedent_2020.md` — 反向概率表结果
 - `docs/diagnose_g2_g3.md` — g2/g3 诊断报告
+- `docs/g2_threshold_scan.md` — g2 门槛扫描结果
+- `docs/g2_fix_verify.md` — g2 修复验证结果
 
 ## 数据与复现
 
