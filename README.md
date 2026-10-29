@@ -27,7 +27,17 @@
 ## 目录结构
 
 - `scripts/` — 流水线各步骤脚本（不含任何数据）
+  - `objects.py` — 对象池构建（岗位/任务团/企业）
+  - `outcomes.py` — 后果标签生成
+  - `prep_judge_input.py` — LLM 判定输入生成
+  - `judge_workflow.dwf.ts` — 66 批 LLM 判定 workflow
+  - `merge_judge.py` — 条件概率汇总（正向表 + p 档校准表）
+  - `reverse_outcome.py` — 反向概率表（P(holds|outcome)）
+  - `diagnose_g2.py` — g2 反向关系诊断（混淆变量 + 机制中间环节）
+  - `diagnose_g3.py` — g3 空壳诊断（p 档排序力 + 前因收紧实验）
 - `docs/workflow.md` — 完整工作流详细说明
+- `docs/reverse_outcome_antecedent_2020.md` — 反向概率表结果
+- `docs/diagnose_g2_g3.md` — g2/g3 诊断报告
 
 ## 数据与复现
 
