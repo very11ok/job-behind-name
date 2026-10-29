@@ -89,7 +89,7 @@ def main():
     RES.mkdir(parents=True, exist_ok=True)
     all_tables, all_calib = [], []
     for rule, (key, outcome) in RULES.items():
-        j = load_judgments(rule)
+        j = load_judgments(rule).rename(columns={rule: key})
         pool = pd.read_parquet(OBJ / f"{rule}_{'jobs' if rule=='g1' else 'comm' if rule=='g2' else 'firms'}_{2020}.parquet")
         known = set(pool[key].astype(str))
         miss = len(j) - j[key].isin(known).sum()
