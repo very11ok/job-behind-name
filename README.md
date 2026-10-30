@@ -7,7 +7,7 @@
 | # | 准则 | 理论出处 | 单元 | 前因（T=2020） | 后果（T+h） |
 |---|------|----------|------|----------------|-------------|
 | a | 互补性再捆绑 | Milgrom & Roberts 1995 / Kremer 1993 | 岗位任务集 | 岗位任务集中存在 E 差 ≥2 的知识互补对（LLM 判定） | 任务集变化且新任务对出现高-低 E 搭配（mixed_new） |
-| b | 层级解绑 | Garicano 2000 | 任务团（任务共现社区） | 知识不对称度（团内 E_ord 离散度）高；层级数 hier_n≥3 | 分裂出任务集不对称度更低的窄岗位（down_std） |
+| b | 层级解绑 | Garicano 2000 | 岗位任务集 | 岗位任务集的知识不对称度（任务 E_ord 离散度）高 | 该任务集合下凝结出不对称度更低的窄岗位（down_std） |
 | c | 模仿性模板扩散 | DiMaggio & Powell 1983 | 企业×年 | 组织规模结构：n_jobs、n_mod 高于中位数 | 新增岗位中"跨企业模板采纳"占比高于同年中位数（above_median） |
 
 ## 核心结果（提升比 = P(后果|前因=1) / P(后果|前因=0)，T=2020）
@@ -15,7 +15,8 @@
 | 准则 / 判据 | h=1 | h=2 | h=3 | 显著性 | 结论 |
 |-------------|-----|-----|-----|--------|------|
 | a：LLM holds → mixed_new（原版） | **2.38** | **3.00** | **2.57** | 三窗口全显著 | 原生成立 |
-| b：asym(e_std)高 → down_std（方向版） | **1.56** | **1.40** | **1.29** | p=4.6e-06/0.003/0.038 | 成立 |
+| **b：岗位版 asym 高 → down_std（主判据）** | **2.65** | **2.86** | **2.95** | p≤7.4e-14 | **成立（最强）** |
+| b：任务团版 asym 高 → down_std（变体） | 1.56 | 1.40 | 1.29 | p=4.6e-06/0.003/0.038 | 成立 |
 | b：LLM holds ∧ hier_n≥3 → split（门槛版） | **2.34** | **2.59** | **2.49** | p<7.3e-07 | 成立 |
 | b：门槛版 ∧ asym 高 → down_std（叠加） | **3.36** | **2.74** | **2.73** | p≤0.006 | 最强（n=15） |
 | c：n_jobs高 ∧ n_mod高 → above_median | **2.98** | **3.26** | **3.06** | p=8e-06/2.6e-05/0.0015 | 成立 |
@@ -59,6 +60,8 @@
 **修复**：三条线并行完成。(1) b 的门槛扫描在 size/hier_n/n_mod/e2_share 四个候选里找到 hier_n≥3 为最优切分，新前因 holds∧hier_n≥3 把提升比从 0.55 翻转到 2.34/2.59/2.49（卡方 p<7.3e-07）。(2) b 的方向性重构按 Garicano 的原义重写后果：不只要求"分裂"，还要求拆出的窄岗位任务集不对称度低于原团（down_std）；前因改为团内任务 E_ord 标准差（知识不对称度），完全脱离 LLM。提升比 1.56/1.40/1.29 三窗口全显著，同时解开了原反向之谜——高不对称团更大更复杂、整体被拆的概率反而低，但只要拆，拆出方向与理论一致。附带发现：拆出窄岗的平均知识强度更高（down_e 提升比 0.25），实际机制是知识密集任务剥离成专家岗，而非例程下沉。(3) c 弃用 LLM 判定，客观指标扫描测了 9 个结构指标，n_jobs 与 n_mod 胜出且全部相似度指标无效，组合前因 n_jobs高∧n_mod高 给出 2.98/3.26/3.06，是全项目最强的判据。
 
 **复核**：18 组关键检验（条件概率、卡方、反向概率）全部用 `scipy.stats.chi2_contingency` 独立重算，与手写公式逐位吻合；`recheck_results.py` / `recheck_g2fix.py` 入库可复跑。
+
+**单位修正（准则 b 的最终形态）**：准则 b 的理论表述是"岗位任务集知识不对称度高 → 该任务集合下凝结出不对称度更低的新岗位"，判定单位应为**岗位**。第一轮沿用的对象池以任务团（任务共现社区）为"任务集合"的载体，与理论不直接对应。`verify_g2_job.py` 把前因与后果原样移植到岗位任务集上（2000 岗位，asym=岗位内任务 E_ord 标准差，后果=任务集合下出现不对称度更低的窄岗位）：提升比 2.65/2.86/2.95（p=1.3e-18/7.4e-14/3.7e-12），强度约为任务团版的 2 倍且随时间递增；不加方向约束的 split 对照完全中性（1.13–1.15，p>0.1）——印证了"旧岗位消失没那么快、拆分方向才是预测内容"的理论判断：会不会拆没有区分度，往哪个方向拆有。知识强度方向的附带发现同样成立：窄岗位的平均 E 更高（down_e 提升比 0.42–0.49），知识密集任务剥离成专家岗而非例程下沉。任务团版保留为变体（任务团是任务集合的网络化定义，结论同向）。
 
 **方法论定位**：LLM 在本项目中承担语义判定（任务对绑定、前因是否成立的语义层），统计结论全部由确定性代码产出。修复过程本身是项目的方法论产出之一：当 LLM 判定与结构证据冲突时，诊断脚本能把冲突定位到具体的混淆结构，并把前因替换为可独立测量的客观量。
 
@@ -111,7 +114,7 @@
 
 ### data/results/（结果表）
 
-- 修复验证明细：`g2_threshold_scan`（门槛扫描）、`g2_threshold_combo`（联合门槛）、`g2_fix_verify`（门槛版验证）、`g2_direction_verify`（方向版验证）、`g3_metric_scan`/`g3_metric_corr`（指标扫描）、`g3_fix_verify`（准则 c 修复验证），各有 .md（在 docs/results/）与 .parquet。
+- 修复验证明细：`g2_threshold_scan`（门槛扫描）、`g2_threshold_combo`（联合门槛）、`g2_fix_verify`（门槛版验证）、`g2_direction_verify`（方向版/任务团变体）、`g2_job_verify`（岗位版主判据）、`g3_metric_scan`/`g3_metric_corr`（指标扫描）、`g3_fix_verify`（准则 c 修复验证），各有 .md（在 docs/results/）与 .parquet。
 - `rule_c_adoption.csv/.parquet`（准则 c 底料）：每新增岗位的 `struct_sim`、`xfirm_struct_sim`、`surf_sim`、匹配模板 `tmpl_*`、`cross_firm`、`surf_resid`。
 - `split_events.csv` 分裂事件、`firm_year_jobs.parquet` 与 `firm_year_stats.csv` 企业×年面板、`agent_metrics_2019.csv`、`baseline_metrics.csv`、`ablation_feats_*` 2019 预测实验消融、`signature_trend.csv`、`snapshot_summary.csv`、`candidate_summary.csv`、`anno_2019.parquet` 与 `agent_preds_2019_sample.parquet`（2019 标注实验）。
 
@@ -135,11 +138,12 @@
 7. `merge_judge.py` — 合并判定与标签 → `judge_g*_2020.parquet`
 8. `reverse_outcome.py` / `diagnose_g2.py` / `diagnose_g3.py` — 反向概率与诊断
 9. `scan_g2_threshold.py` / `verify_g2_fix.py` — 准则 b 门槛扫描与验证
-10. `verify_g2_direction.py` — 准则 b 方向性重构验证
-11. `scan_g3_metrics.py` / `verify_g3_fix.py` — 准则 c 指标扫描与修复验证
-12. `recheck_results.py` / `recheck_g2fix.py` — scipy 独立复核
-13. `run_agent_2019.py` / `run_backtest.py` / `ablation_feats.py` / `make_figures.py` / `trends.py` — 2019 预测实验与图表
-14. `check_hedging.py` — 文档防御性写作（hedging）检测，词表源自 [aproko/keyword_hedge_detector](https://github.com/aproko/keyword_hedge_detector) 的中文 hedge 词表（过滤口语词）并补充英文 hedge；用于文档发布前的表达质检
+10. `verify_g2_direction.py` — 准则 b 方向性重构验证（任务团版变体）
+11. `verify_g2_job.py` — 准则 b 岗位版验证（主判据：岗位任务集 asym → down_std）
+12. `scan_g3_metrics.py` / `verify_g3_fix.py` — 准则 c 指标扫描与修复验证
+13. `recheck_results.py` / `recheck_g2fix.py` — scipy 独立复核
+14. `run_agent_2019.py` / `run_backtest.py` / `ablation_feats.py` / `make_figures.py` / `trends.py` — 2019 预测实验与图表
+15. `check_hedging.py` — 文档防御性写作（hedging）检测，词表源自 [aproko/keyword_hedge_detector](https://github.com/aproko/keyword_hedge_detector) 的中文 hedge 词表（过滤口语词）并补充英文 hedge；用于文档发布前的表达质检
 
 ## 复现
 
@@ -149,7 +153,7 @@ python objects.py && python outcomes.py
 # 2. 判定输入（66 批）→ 用 workflow 引擎跑 workflow/pipeline.dwf.ts → 合并
 python prep_judge_input.py && python merge_judge.py
 # 3. 三准则修复验证
-python verify_g2_fix.py && python verify_g2_direction.py && python verify_g3_fix.py
+python verify_g2_fix.py && python verify_g2_direction.py && python verify_g2_job.py && python verify_g3_fix.py
 # 4. 独立复核（scipy 交叉验证）
 python recheck_results.py && python recheck_g2fix.py
 ```
@@ -158,4 +162,4 @@ python recheck_results.py && python recheck_g2fix.py
 
 ## 结果文档索引（docs/results/）
 
-`antecedent_outcome_2020.md`（主表）· `reverse_outcome_antecedent_2020.md`（反向概率）· `diagnose_g2_g3.md`（混淆诊断）· `g2_threshold_scan.md`（门槛扫描）· `g2_fix_verify.md`（门槛版验证）· `g2_direction_verify.md`（方向版验证）· `g3_metric_scan.md`（指标扫描）· `g3_fix_verify.md`（准则 c 修复验证）· 及 2019 预测实验相关文档。
+`antecedent_outcome_2020.md`（主表）· `reverse_outcome_antecedent_2020.md`（反向概率）· `diagnose_g2_g3.md`（混淆诊断）· `g2_threshold_scan.md`（门槛扫描）· `g2_fix_verify.md`（门槛版验证）· `g2_direction_verify.md`（方向版/任务团变体验证）· `g2_job_verify.md`（岗位版主判据验证）· `g3_metric_scan.md`（指标扫描）· `g3_fix_verify.md`（准则 c 修复验证）· 及 2019 预测实验相关文档。
