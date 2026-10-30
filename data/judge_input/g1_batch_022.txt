@@ -1,0 +1,397 @@
+【判定协议 · 准则(a) 互补性再捆绑 —— 前因判定】
+单元：一个岗位的任务集合（T=2020 快照）。
+前因定义：集合内同时包含——
+  ①「AI 可吸收的高暴露可编码任务」：暴露 E2、codability（可编码度）高，纯信息处理、规则明确；
+  ②「难被吸收的语境嵌入任务」：依赖判断(judge)/协调(coordinate)/问责(accountable)/具身情境，
+     codability 低、暴露 E0/E1。
+两类任务并存（①②都出现）才算前因成立 holds=1；只有一类或两类都弱则 holds=0。
+p 的含义：给定 2020 年信息，你估计该岗位在 2021-2023 年出现「新任务组合且为高-低暴露搭配」的概率。
+
+【输出】严格 JSON 数组，每个元素对应输入中一个对象块，顺序一致，不输出任何其他文字：
+[{"id":"<对象id>","holds":<0|1>,"p":<0..1>,"why":"<≤30字中文依据>"}]
+- id 照抄对象块第一行方括号里的 id。
+- p 给档位即可：0.05（几乎不可能）/0.1/0.2/0.3/0.5/0.7/0.9。
+[id=J43894 | 岗位任务集 5 任务 | 功能模块数 3]
+  t961 | Coordinate or participate in promotional activities or trade shows, working with develope… | E2高 | 可编码0.00 语境0.75 | 市场
+  t21588 | Develop and maintain client relationships. | E0低 | 可编码0.00 语境0.50 | 销售
+  t13198 | Identify interested and qualified customers to provide them with additional information. | E0低 | 可编码0.50 语境0.50 | 销售
+  t1121 | Perform marketing and public relations activities. | E2高 | 可编码0.50 语境0.50 | 市场
+  t7956 | Assign and review the work of subordinates. | E1中 | 可编码0.50 语境0.75 | 综合管理
+[id=J43466 | 岗位任务集 7 任务 | 功能模块数 5]
+  t41 | Review plans and confer with research or support staff to develop new products or process… | E2高 | 可编码0.00 语境0.75 | 研发技术
+  t8467 | Plan and develop new products and production processes. | E2高 | 可编码0.00 语境0.75 | 研发技术
+  t1535 | Monitor product quality to ensure compliance with standards and specifications. | E2高 | 可编码0.50 语境0.75 | 质量检验
+  t16422 | Establish production or quality control standards. | E2高 | 可编码0.50 语境0.50 | 质量检验
+  t956 | Consult with product development personnel on product specifications, such as design, col… | E2高 | 可编码0.50 语境0.50 | 销售
+  t6911 | Participate in new product planning or market research, including studying the potential … | E2高 | 可编码0.50 语境0.50 | 市场
+  t2167 | Evaluate new products for usefulness and suitability. | E2高 | 可编码0.50 语境0.25 | 采购供应链
+[id=J39538 | 岗位任务集 4 任务 | 功能模块数 2]
+  t20741 | Provide technical customer service. | E2高 | 可编码0.50 语境0.50 | 客户服务
+  t3587 | Confer with scientific, engineering, and technical personnel to resolve design, research,… | E2高 | 可编码0.50 语境0.50 | 研发技术
+  t20999 | Research and explore the use of new materials, technologies, and products to incorporate … | E2高 | 可编码0.50 语境0.25 | 研发技术
+  t14697 | Confer with management or development teams to prioritize needs, resolve conflicts, devel… | E2高 | 可编码na 语境na | nan
+[id=J43867 | 岗位任务集 4 任务 | 功能模块数 2]
+  t13958 | Inspect, operate, and test completed products to verify functioning, machine capabilities… | E0低 | 可编码0.50 语境0.75 | 质量检验
+  t10831 | Prepare, organize, and maintain inspection records. | E1中 | 可编码1.00 语境0.00 | 质量检验
+  t14305 | Monitor process indicators, instruments, gauges, and meters to detect and report any poss… | E2高 | 可编码0.50 语境0.75 | 生产执行
+  t15411 | Collect and analyze production samples to evaluate quality. | E2高 | 可编码0.50 语境0.75 | 质量检验
+[id=J38945 | 岗位任务集 6 任务 | 功能模块数 4]
+  t16182 | Participate in the development or implementation of online marketing strategy. | E2高 | 可编码0.50 语境0.50 | 市场
+  t15725 | Develop or revise business plans for online business, emphasizing factors such as product… | E2高 | 可编码0.00 语境0.75 | 综合管理
+  t21218 | Analyze the effectiveness of marketing tactics or channels. | E2高 | 可编码1.00 语境0.25 | 市场
+  t9680 | Collaborate with sales teams to understand customer requirements, to promote the sale of … | E2高 | 可编码0.00 语境0.50 | 销售
+  t7956 | Assign and review the work of subordinates. | E1中 | 可编码0.50 语境0.75 | 综合管理
+  t16183 | Identify and develop commercial or technical specifications, such as usability, pricing, … | E2高 | 可编码0.50 语境0.75 | IT数据
+[id=J40154 | 岗位任务集 6 任务 | 功能模块数 5]
+  t20616 | Sell service contracts for technical or scientific products. | E2高 | 可编码0.50 语境1.00 | 销售
+  t181 | Plan and administer biological research programs for government, research firms, medical … | E2高 | 可编码0.00 语境0.75 | 研发技术
+  t13194 | Sell products being promoted and keep records of sales. | E0低 | 可编码0.50 语境0.50 | 销售
+  t20709 | Formulate, direct, or coordinate marketing activities or policies to promote products or … | E2高 | 可编码0.00 语境0.75 | 市场
+  t21311 | Establish and maintain relationships with individual or business customers or provide ass… | E2高 | 可编码0.00 语境0.75 | 客户服务
+  t1772 | Coach client representatives in effective communication with the public or with employees. | E2高 | 可编码0.00 语境0.50 | 人力资源
+[id=J39846 | 岗位任务集 6 任务 | 功能模块数 4]
+  t15844 | Negotiate contracts for services or materials needed for environmental remediation. | E2高 | 可编码0.00 语境0.75 | 采购供应链
+  t15210 | Design, or supervise the design of, systems, processes, or equipment for control, managem… | E2高 | 可编码0.50 语境0.75 | 工艺工程
+  t7612 | Prepare reports describing contamination tests, material or equipment decontaminated, or … | E1中 | 可编码1.00 语境0.50 | EHS安全
+  t21943 | Represent architect or engineer on construction site, ensuring builder compliance with de… | E2高 | 可编码0.00 语境1.00 | 工艺工程
+  t23388 | Repair farm buildings, fences, and other structures. | E0低 | 可编码0.00 语境0.25 | 设备维护
+  t5333 | Design and supervise environmental and land reclamation projects in agriculture and relat… | E2高 | 可编码na 语境na | nan
+[id=J38854 | 岗位任务集 5 任务 | 功能模块数 4]
+  t16469 | Analyze existing development or manufacturing procedures and suggest improvements. | E2高 | 可编码0.50 语境0.75 | 工艺工程
+  t10974 | Collaborate with producers to diagnose and prevent management and production problems. | E2高 | 可编码0.00 语境0.50 | 生产执行
+  t8941 | Direct and support the compilation and analysis of technical source data necessary for pr… | E2高 | 可编码0.50 语境0.75 | 研发技术
+  t4028 | Discuss production requirements with clients. | E0低 | 可编码0.00 语境0.75 | 生产执行
+  t20847 | Perform managerial duties such as hiring and training employees and overseeing facility n… | E2高 | 可编码0.00 语境0.75 | 人力资源
+[id=J37851 | 岗位任务集 10 任务 | 功能模块数 4]
+  t18968 | Develop disaster recovery plans. | E2高 | 可编码0.50 语境0.75 | IT数据
+  t7266 | Collaborate with other officials to prepare and analyze damage assessments following disa… | E2高 | 可编码na 语境na | nan
+  t17580 | Respond to critical incidents, such as catastrophic events, violent weather, or civil dis… | E0低 | 可编码na 语境na | nan
+  t15692 | Develop or implement procedures or systems to evaluate or select suppliers. | E2高 | 可编码0.50 语境0.75 | 采购供应链
+  t20945 | Monitor suppliers' activities to assess performance in meeting quality or delivery requir… | E2高 | 可编码0.50 语境0.75 | 采购供应链
+  t15655 | Conduct periodic internal reviews or audits to ensure that compliance procedures are foll… | E2高 | 可编码0.50 语境0.75 | 行政法务
+  t20947 | Identify or qualify new suppliers in collaboration with other departments, such as procur… | E2高 | 可编码0.00 语境0.75 | 采购供应链
+  t18518 | Compile data and create statistical reports on library usage. | E1中 | 可编码na 语境na | nan
+  t692 | Advise customers on use and care of merchandise. | E2高 | 可编码na 语境na | nan
+  t22004 | Review, develop, or prepare maintenance standards. | E1中 | 可编码0.50 语境0.75 | 设备维护
+[id=J21225 | 岗位任务集 8 任务 | 功能模块数 3]
+  t22024 | Assist engineers in developing, building, or testing prototypes or new products, processe… | E2高 | 可编码0.50 语境0.75 | 研发技术
+  t20499 | Provide technical support or instruction to staff or customers regarding electronics equi… | E2高 | 可编码0.50 语境0.75 | 客户服务
+  t20176 | Develop or implement policies, standards, or procedures for engineering and technical wor… | E2高 | 可编码0.50 语境0.50 | 研发技术
+  t20480 | Direct activities of technicians engaged in preparing drawings or specification documents. | E1中 | 可编码0.00 语境0.75 | 研发技术
+  t16137 | Create or review technical design documentation to ensure the accurate development of rep… | E1中 | 可编码0.50 语境0.50 | IT数据
+  t15417 | Participate in the development of product specifications. | E2高 | 可编码0.50 语境0.50 | 研发技术
+  t19542 | Evaluate and select information or other technology solutions to improve tracking and rep… | E2高 | 可编码0.50 语境0.50 | IT数据
+  t15558 | Maintain wellness- and fitness-related schedules, records, or reports. | E1中 | 可编码na 语境na | nan
+[id=J38499 | 岗位任务集 5 任务 | 功能模块数 3]
+  t6911 | Participate in new product planning or market research, including studying the potential … | E2高 | 可编码0.50 语境0.50 | 市场
+  t23901 | Identify and apply for project funding. | E2高 | 可编码0.50 语境0.75 | 财务会计
+  t21317 | Examine, evaluate, or process loan applications. | E2高 | 可编码0.50 语境0.50 | 财务会计
+  t676 | Establish credit policies and operating procedures. | E1中 | 可编码0.50 语境0.75 | 财务会计
+  t1772 | Coach client representatives in effective communication with the public or with employees. | E2高 | 可编码0.00 语境0.50 | 人力资源
+[id=J40188 | 岗位任务集 3 任务 | 功能模块数 2]
+  t22901 | Manage the department or supervise clerical workers, directing or controlling activities … | E2高 | 可编码0.00 语境0.75 | 综合管理
+  t19212 | Provide emergency or other appropriate medical care to participants with symptoms or sign… | E0低 | 可编码na 语境na | nan
+  t961 | Coordinate or participate in promotional activities or trade shows, working with develope… | E2高 | 可编码0.00 语境0.75 | 市场
+[id=J41513 | 岗位任务集 2 任务 | 功能模块数 2]
+  t12574 | Maintain processing, production, and inspection information and reports. | E1中 | 可编码1.00 语境0.00 | 生产执行
+  t3327 | Develop or implement quality control programs. | E2高 | 可编码0.50 语境0.75 | 质量检验
+[id=J44343 | 岗位任务集 6 任务 | 功能模块数 5]
+  t18204 | Oversee or provide expertise on manufacturing, assembly, or fabrication processes. | E0低 | 可编码0.00 语境0.75 | 工艺工程
+  t11857 | Clean or maintain tools or test equipment. | E0低 | 可编码0.00 语境0.25 | 设备维护
+  t22069 | Assist nanoscientists or engineers in writing process specifications or documentation. | E1中 | 可编码0.50 语境0.25 | 研发技术
+  t22068 | Assist nanoscientists or engineers in processing or characterizing materials according to… | E2高 | 可编码0.50 语境0.50 | 研发技术
+  t20741 | Provide technical customer service. | E2高 | 可编码0.50 语境0.50 | 客户服务
+  t5346 | Inspect electronic equipment, instruments, products, or systems to ensure conformance to … | E0低 | 可编码0.50 语境0.75 | 质量检验
+[id=J39112 | 岗位任务集 5 任务 | 功能模块数 3]
+  t21462 | Assign duties or responsibilities to project personnel. | E2高 | 可编码0.50 语境0.75 | 综合管理
+  t16309 | Prepare project budgets, schedules, or specifications for labor or materials. | E2高 | 可编码0.50 语境0.25 | 综合管理
+  t21469 | Monitor costs incurred by project staff to identify budget issues. | E2高 | 可编码0.50 语境0.25 | 财务会计
+  t13702 | Organize materials to prepare for use. | E0低 | 可编码0.50 语境0.25 | 物流仓储
+  t16163 | Direct or coordinate activities of project personnel. | E2高 | 可编码0.00 语境0.75 | 综合管理
+[id=J37943 | 岗位任务集 6 任务 | 功能模块数 1]
+  t22944 | Develop and document security procedures, policies, or standards. | E1中 | 可编码na 语境na | nan
+  t872 | Inspect and monitor construction sites to ensure adherence to safety standards, building … | E0低 | 可编码0.50 语境0.75 | EHS安全
+  t8584 | Enforce safety rules and regulations. | E0低 | 可编码0.50 语境0.75 | EHS安全
+  t9442 | Develop work or security procedures. | E2高 | 可编码0.50 语境0.75 | EHS安全
+  t9481 | Direct or coordinate the daily activities or training of security staff. | E0低 | 可编码0.00 语境0.75 | EHS安全
+  t10491 | Investigate and report on accidents. | E1中 | 可编码0.00 语境1.00 | EHS安全
+[id=J39505 | 岗位任务集 3 任务 | 功能模块数 2]
+  t11375 | Plan production commitments or timetables for business units, specific programs, or jobs,… | E2高 | 可编码0.50 语境0.50 | 生产执行
+  t20711 | Negotiate prices, discount terms, or transportation arrangements with suppliers. | E2高 | 可编码0.50 语境0.75 | 采购供应链
+  t12222 | Estimate the amounts, types, or costs of needed materials. | E2高 | 可编码0.50 语境0.25 | 采购供应链
+[id=J44152 | 岗位任务集 9 任务 | 功能模块数 5]
+  t20963 | Design tests of finished products or process capabilities to establish standards or valid… | E2高 | 可编码0.50 语境0.50 | 质量检验
+  t12390 | Test samples of materials or products to ensure compliance with specifications, using tes… | E0低 | 可编码0.50 语境0.50 | 质量检验
+  t9667 | Attend company meetings to exchange product information and coordinate work activities wi… | E2高 | 可编码0.00 语境0.25 | 综合管理
+  t8831 | Appoint department heads or managers and assign or delegate responsibilities to them. | E0低 | 可编码0.00 语境0.75 | 综合管理
+  t5235 | Recruit, hire, train, and terminate departmental personnel. | E2高 | 可编码0.50 语境0.75 | 人力资源
+  t21510 | Confer with company officials about financial and regulatory matters. | E2高 | 可编码0.00 语境0.75 | 财务会计
+  t20434 | Supervise or train other staff members. | E0低 | 可编码0.00 语境0.75 | 综合管理
+  t5229 | Determine allocations of funds for staff, supplies, materials, and equipment, and authori… | E2高 | 可编码0.50 语境0.75 | 财务会计
+  t22399 | Organize and supervise games or other recreational activities. | E0低 | 可编码0.00 语境0.75 | 客户服务
+[id=J44159 | 岗位任务集 7 任务 | 功能模块数 5]
+  t955 | Negotiate contracts with vendors or distributors to manage product distribution, establis… | E2高 | 可编码0.00 语境0.75 | 采购供应链
+  t950 | Develop pricing strategies, balancing firm objectives and customer satisfaction. | E2高 | 可编码0.50 语境0.75 | 市场
+  t3510 | Manage credit and help price corporate security offerings. | E2高 | 可编码0.00 语境0.75 | 财务会计
+  t17615 | Develop or implement marketing strategies. | E2高 | 可编码0.50 语境0.50 | 市场
+  t20434 | Supervise or train other staff members. | E0低 | 可编码0.00 语境0.75 | 综合管理
+  t5229 | Determine allocations of funds for staff, supplies, materials, and equipment, and authori… | E2高 | 可编码0.50 语境0.75 | 财务会计
+  t22399 | Organize and supervise games or other recreational activities. | E0低 | 可编码0.00 语境0.75 | 客户服务
+[id=J41248 | 岗位任务集 5 任务 | 功能模块数 2]
+  t961 | Coordinate or participate in promotional activities or trade shows, working with develope… | E2高 | 可编码0.00 语境0.75 | 市场
+  t950 | Develop pricing strategies, balancing firm objectives and customer satisfaction. | E2高 | 可编码0.50 语境0.75 | 市场
+  t17660 | Develop marketing or strategic plans for sales territories. | E2高 | 可编码0.50 语境0.25 | 市场
+  t20706 | Plan or direct activities, such as sales promotions, that require coordination with other… | E2高 | 可编码0.00 语境0.75 | 市场
+  t9087 | Conduct research on the structures and properties of materials, such as metals, alloys, p… | E2高 | 可编码0.50 语境0.50 | 研发技术
+[id=J41510 | 岗位任务集 3 任务 | 功能模块数 2]
+  t3244 | Direct and coordinate product research and development. | E2高 | 可编码0.00 语境0.75 | 研发技术
+  t4178 | Prepare and administer medications, vaccines, serums, or treatments, as prescribed by vet… | E0低 | 可编码na 语境na | nan
+  t1288 | Read technical manuals, confer with users, or conduct computer diagnostics to investigate… | E1中 | 可编码0.00 语境1.00 | IT数据
+[id=J34730 | 岗位任务集 5 任务 | 功能模块数 5]
+  t11426 | Supervise, coordinate, or schedule the activities of construction or extractive workers. | E2高 | 可编码0.00 语境1.00 | 生产执行
+  t3114 | Establish work procedures for fabricating new structural products, using a variety of met… | E0低 | 可编码0.50 语境0.75 | 工艺工程
+  t893 | Coordinate efforts with other workers involved in installing or maintaining equipment or … | E0低 | 可编码0.50 语境0.75 | 设备维护
+  t21863 | Conduct or coordinate worker training in areas such as safety laws and regulations, hazar… | E2高 | 可编码0.50 语境1.00 | EHS安全
+  t885 | Operate equipment to demonstrate proper use or to analyze malfunctions. | E0低 | 可编码0.50 语境0.50 | 客户服务
+[id=J39441 | 岗位任务集 4 任务 | 功能模块数 2]
+  t1546 | Operate experimental pilot plants, assisting with experimental design. | E0低 | 可编码0.00 语境0.75 | 研发技术
+  t8467 | Plan and develop new products and production processes. | E2高 | 可编码0.00 语境0.75 | 研发技术
+  t5442 | Monitor industry statistics and follow trends in trade literature. | E2高 | 可编码1.00 语境0.00 | 市场
+  t1511 | Write technical papers or reports or prepare standards and specifications for processes, … | E1中 | 可编码0.50 语境0.75 | 研发技术
+[id=J38543 | 岗位任务集 2 任务 | 功能模块数 2]
+  t90 | Establish and maintain tendering process, and conduct negotiations. | E2高 | 可编码0.00 语境0.75 | 采购供应链
+  t7956 | Assign and review the work of subordinates. | E1中 | 可编码0.50 语境0.75 | 综合管理
+[id=J42584 | 岗位任务集 11 任务 | 功能模块数 5]
+  t4626 | Telephone or write letters to respond to correspondence from customers or to follow up in… | E1中 | 可编码0.50 语境0.25 | 销售
+  t10775 | Review daily work or delivery schedules to determine orders, sequences of deliveries, or … | E1中 | 可编码na 语境na | nan
+  t2560 | Resolve problems or discrepancies concerning customers' accounts. | E2高 | 可编码0.50 语境0.50 | 客户服务
+  t13194 | Sell products being promoted and keep records of sales. | E0低 | 可编码0.50 语境0.50 | 销售
+  t15789 | Visit stores to ensure compliance with company policies and procedures. | E0低 | 可编码0.00 语境1.00 | 行政法务
+  t15262 | Monitor tool and part inventories and the condition and maintenance of shops to ensure ad… | E2高 | 可编码na 语境na | nan
+  t2008 | Instruct, motivate, safeguard, and assist patients as they practice exercises or function… | E0低 | 可编码0.00 语境1.00 | 其他
+  t657 | Provide customer service by greeting and assisting customers and responding to customer i… | E2高 | 可编码0.50 语境0.75 | 客户服务
+  t2802 | Manage projects or contribute to committee or team work. | E2高 | 可编码0.50 语境0.75 | 综合管理
+  t23289 | Train other workers or coordinate their work, as necessary. | E0低 | 可编码0.50 语境0.50 | 综合管理
+  t2770 | Manage and maintain executives' schedules. | E2高 | 可编码0.50 语境0.25 | 行政法务
+[id=J29744 | 岗位任务集 3 任务 | 功能模块数 2]
+  t10685 | Perform routine repair and maintenance duties. | E0低 | 可编码0.50 语境0.25 | 设备维护
+  t20300 | Recommend necessary corrective actions, based on inspection results. | E2高 | 可编码0.50 语境0.50 | 质量检验
+  t8416 | Install, maintain, and repair electrical distribution and transmission systems, including… | E0低 | 可编码0.00 语境0.75 | 设备维护
+[id=J39484 | 岗位任务集 4 任务 | 功能模块数 3]
+  t8467 | Plan and develop new products and production processes. | E2高 | 可编码0.00 语境0.75 | 研发技术
+  t14591 | Record production and operational data, such as amount of materials processed. | E1中 | 可编码1.00 语境0.00 | 生产执行
+  t14624 | Assign or schedule tasks to meet work priorities and goals. | E2高 | 可编码0.50 语境0.50 | 综合管理
+  t7316 | Plan, supervise, and review work of assigned subordinates. | E2高 | 可编码0.00 语境0.75 | 综合管理
+[id=J42933 | 岗位任务集 6 任务 | 功能模块数 2]
+  t23695 | Plan and establish schedules. | E2高 | 可编码0.50 语境0.25 | 综合管理
+  t8940 | Report project plans, progress, and results. | E1中 | 可编码1.00 语境0.00 | 综合管理
+  t7206 | Prepare project proposals. | E1中 | 可编码0.50 语境0.75 | 综合管理
+  t21480 | Schedule or facilitate project meetings. | E2高 | 可编码0.50 语境0.25 | 综合管理
+  t14680 | Develop or approve project plans, schedules, or budgets. | E2高 | 可编码0.00 语境0.75 | 综合管理
+  t1772 | Coach client representatives in effective communication with the public or with employees. | E2高 | 可编码0.00 语境0.50 | 人力资源
+[id=J43005 | 岗位任务集 18 任务 | 功能模块数 7]
+  t8639 | Provide technical supervision regarding traffic control devices to other traffic technici… | E2高 | 可编码0.00 语境1.00 | 生产执行
+  t10476 | Maintain daily logs of operation, maintenance, and safety activities, including test resu… | E1中 | 可编码0.50 语境0.25 | 设备维护
+  t20844 | Investigate alleged license or permit violations. | E2高 | 可编码na 语境na | nan
+  t11098 | Plan emergency response drills. | E2高 | 可编码0.50 语境0.75 | EHS安全
+  t1073 | Administer highway planning, construction, or maintenance. | E2高 | 可编码0.50 语境0.75 | 综合管理
+  t20311 | Administer tests to assess whether engineers or operators are qualified to use equipment. | E2高 | 可编码0.50 语境1.00 | 人力资源
+  t11742 | Construct, test, maintain, and repair substation relay and control systems. | E0低 | 可编码0.50 语境0.75 | 设备维护
+  t9613 | Mark design boundaries, and paint natural or artificial turf fields with team logos or na… | E2高 | 可编码na 语境na | nan
+  t10491 | Investigate and report on accidents. | E1中 | 可编码0.00 语境1.00 | EHS安全
+  t8571 | Conduct staff meetings to relay general information or to address specific topics, such a… | E0低 | 可编码na 语境na | nan
+  t1216 | Inspect event facilities to ensure that they conform to customer requirements. | E0低 | 可编码na 语境na | nan
+  t9441 | Supervise or provide security for offenders performing tasks, such as construction, maint… | E0低 | 可编码0.00 语境1.00 | EHS安全
+  t14457 | Maintain government-issued certifications, as required. | E0低 | 可编码0.50 语境0.25 | 行政法务
+  t22901 | Manage the department or supervise clerical workers, directing or controlling activities … | E2高 | 可编码0.00 语境0.75 | 综合管理
+  t20490 | Manage and direct the construction, operations, or maintenance activities at project site. | E0低 | 可编码0.00 语境1.00 | 综合管理
+  t23899 | Operate equipment such as forklifts. | E0低 | 可编码0.00 语境0.25 | 物流仓储
+  t968 | Direct daily operations of department, analyzing workflow, establishing priorities, devel… | E2高 | 可编码0.50 语境0.75 | 综合管理
+  t23836 | Complete forms describing tasks completed. | E1中 | 可编码1.00 语境0.00 | 行政法务
+[id=J40278 | 岗位任务集 12 任务 | 功能模块数 5]
+  t9704 | Supervise the work of office, administrative, or customer service employees to ensure adh… | E2高 | 可编码0.50 语境0.75 | 综合管理
+  t3327 | Develop or implement quality control programs. | E2高 | 可编码0.50 语境0.75 | 质量检验
+  t20197 | Prepare, maintain, or revise quality assurance documentation or procedures. | E1中 | 可编码0.50 语境0.50 | 质量检验
+  t16958 | Participate in internal assessments and audits as required. | E2高 | 可编码0.50 语境0.75 | 质量检验
+  t16278 | Perform quality control audits to ensure accuracy, completeness, or proper usage of clini… | E2高 | 可编码0.50 语境0.50 | 质量检验
+  t9254 | Confer with customers to assess customer needs or obtain feedback. | E0低 | 可编码0.00 语境0.75 | 客户服务
+  t22744 | Test dosage evaluation instruments and survey meters to ensure they are operating properl… | E2高 | 可编码0.50 语境0.75 | 质量检验
+  t9006 | Conduct or supervise tests on raw materials or finished products to ensure their quality. | E2高 | 可编码0.50 语境1.00 | 质量检验
+  t10160 | Record production data, and maintain production logs. | E1中 | 可编码1.00 语境0.00 | 生产执行
+  t8563 | Review work throughout the work process and at completion to ensure that it has been perf… | E0低 | 可编码0.50 语境0.50 | 质量检验
+  t10831 | Prepare, organize, and maintain inspection records. | E1中 | 可编码1.00 语境0.00 | 质量检验
+  t2488 | Comply with federal, state, and company policies, procedures, and regulations. | E2高 | 可编码0.50 语境0.25 | 行政法务
+[id=J44329 | 岗位任务集 6 任务 | 功能模块数 2]
+  t16195 | Provide test specifications to quality assurance staff. | E1中 | 可编码0.50 语境0.75 | 质量检验
+  t18608 | Coordinate and implement quality control objectives, activities, or procedures to resolve… | E2高 | 可编码0.50 语境1.00 | 质量检验
+  t21996 | Specify, coordinate, or conduct quality control or quality assurance programs or procedur… | E2高 | 可编码0.50 语境0.75 | 质量检验
+  t15425 | Create and implement inspection and testing criteria or procedures. | E2高 | 可编码0.50 语境0.50 | 质量检验
+  t1405 | Direct workers engaged in product measurement, inspection, and testing activities to ensu… | E2高 | 可编码0.00 语境1.00 | 质量检验
+  t2802 | Manage projects or contribute to committee or team work. | E2高 | 可编码0.50 语境0.75 | 综合管理
+[id=J4965 | 岗位任务集 4 任务 | 功能模块数 3]
+  t9688 | Research and identify potential customers for products or services. | E2高 | 可编码0.50 语境0.25 | 销售
+  t18957 | Communicate with customers, sales staff, or marketing staff to determine customer needs. | E2高 | 可编码0.00 语境0.50 | 销售
+  t17910 | Review customer requests for service to determine service needs and deploy appropriate re… | E2高 | 可编码0.50 语境0.50 | 客户服务
+  t4596 | Gather all relevant material for bid processes, and coordinate bidding and contract appro… | E2高 | 可编码0.50 语境0.75 | 采购供应链
+[id=J37487 | 岗位任务集 4 任务 | 功能模块数 4]
+  t16541 | Engineer production processes for specific nanotechnology applications, such as electropl… | E0低 | 可编码0.50 语境0.25 | 工艺工程
+  t22068 | Assist nanoscientists or engineers in processing or characterizing materials according to… | E2高 | 可编码0.50 语境0.50 | 研发技术
+  t20741 | Provide technical customer service. | E2高 | 可编码0.50 语境0.50 | 客户服务
+  t6825 | Observe and evaluate students' work to determine progress and make suggestions for improv… | E2高 | 可编码0.00 语境0.75 | 其他
+[id=J42946 | 岗位任务集 4 任务 | 功能模块数 3]
+  t10008 | Confer with customers, read work orders, or examine vehicles needing repair to determine … | E0低 | 可编码0.50 语境0.75 | 客户服务
+  t21972 | Prepare and interpret specifications, calculating weights, volumes, or stress factors. | E1中 | 可编码0.50 语境0.25 | 研发技术
+  t21732 | Confer with users to analyze, configure, or troubleshoot applications. | E2高 | 可编码0.50 语境0.50 | IT数据
+  t16505 | Conduct analyses addressing issues such as failure, reliability, or yield improvement. | E2高 | 可编码0.50 语境0.25 | 研发技术
+[id=J38251 | 岗位任务集 4 任务 | 功能模块数 2]
+  t13702 | Organize materials to prepare for use. | E0低 | 可编码0.50 语境0.25 | 物流仓储
+  t1357 | Oversee project production efforts to assure projects are completed on time and within bu… | E2高 | 可编码0.00 语境0.75 | 综合管理
+  t21339 | Supervise subordinate employees. | E0低 | 可编码0.00 语境0.75 | 综合管理
+  t21365 | Develop or implement plans for facility modification or expansion, such as equipment purc… | E2高 | 可编码0.50 语境0.75 | 综合管理
+[id=J40065 | 岗位任务集 5 任务 | 功能模块数 3]
+  t21277 | Oversee construction and renovation projects to improve efficiency and to ensure that fac… | E2高 | 可编码0.00 语境1.00 | 综合管理
+  t21794 | Maintain cyber defense software or hardware to support responses to cyber incidents. | E1中 | 可编码0.50 语境0.25 | IT数据
+  t1285 | Oversee the daily performance of computer systems. | E2高 | 可编码0.50 语境0.50 | IT数据
+  t1317 | Perform data backups and disaster recovery operations. | E1中 | 可编码1.00 语境0.25 | IT数据
+  t2147 | Inspect supplies, equipment, and work areas to ensure efficient service and conformance t… | E0低 | 可编码0.50 语境0.75 | 质量检验
+[id=J37163 | 岗位任务集 5 任务 | 功能模块数 5]
+  t20480 | Direct activities of technicians engaged in preparing drawings or specification documents. | E1中 | 可编码0.00 语境0.75 | 研发技术
+  t2166 | Develop equipment maintenance schedules and arrange for repairs. | E2高 | 可编码0.50 语境0.50 | 设备维护
+  t10022 | Read and interpret schematic drawings, diagrams, blueprints, specifications, work orders,… | E2高 | 可编码0.50 语境0.25 | 工艺工程
+  t11199 | Establish and enforce operating procedures and work standards that will ensure adequate p… | E0低 | 可编码0.00 语境0.75 | 综合管理
+  t8584 | Enforce safety rules and regulations. | E0低 | 可编码0.50 语境0.75 | EHS安全
+[id=J40843 | 岗位任务集 3 任务 | 功能模块数 3]
+  t5437 | Seek and provide information to help companies determine their position in the marketplac… | E2高 | 可编码0.00 语境0.50 | 市场
+  t18689 | Perform administrative tasks, such as managing office functions and finances. | E1中 | 可编码0.50 语境0.75 | 行政法务
+  t21267 | Meet with other departmental leaders to establish organizational goals, strategic plans, … | E0低 | 可编码0.00 语境0.75 | 综合管理
+[id=J41226 | 岗位任务集 2 任务 | 功能模块数 1]
+  t9515 | Perform or assist with cleaning duties as necessary. | E0低 | 可编码0.00 语境0.25 | 其他
+  t21366 | Direct inbound or outbound operations, such as transportation or warehouse activities, sa… | E2高 | 可编码na 语境na | nan
+[id=J41565 | 岗位任务集 4 任务 | 功能模块数 4]
+  t14591 | Record production and operational data, such as amount of materials processed. | E1中 | 可编码1.00 语境0.00 | 生产执行
+  t12810 | Perform general warehouse activities, such as opening containers and crates, filling ware… | E0低 | 可编码0.50 语境0.25 | 物流仓储
+  t5236 | Plan, administer, and control budgets, maintain financial records, and produce financial … | E2高 | 可编码0.50 语境0.75 | 财务会计
+  t46 | Direct, supervise and evaluate work activities of medical, nursing, technical, clerical, … | E2高 | 可编码0.00 语境1.00 | 综合管理
+[id=J43027 | 岗位任务集 4 任务 | 功能模块数 3]
+  t21596 | Monitor fundamental economic, industrial, and corporate developments by analyzing informa… | E2高 | 可编码0.50 语境0.50 | 财务会计
+  t11435 | Analyze worker or production problems and recommend solutions, such as improving producti… | E2高 | 可编码0.50 语境0.50 | 生产执行
+  t3395 | Direct the preparation of regular and special budget reports. | E2高 | 可编码0.50 语境0.75 | 财务会计
+  t14637 | Direct daily operations of departments, coordinating project activities with other depart… | E2高 | 可编码0.00 语境0.75 | 综合管理
+[id=J41388 | 岗位任务集 4 任务 | 功能模块数 2]
+  t961 | Coordinate or participate in promotional activities or trade shows, working with develope… | E2高 | 可编码0.00 语境0.75 | 市场
+  t1141 | Direct fundraising activities and the preparation of public relations materials. | E2高 | 可编码na 语境na | nan
+  t21228 | Design and edit promotional publications, such as brochures. | E2高 | 可编码0.50 语境0.25 | 市场
+  t968 | Direct daily operations of department, analyzing workflow, establishing priorities, devel… | E2高 | 可编码0.50 语境0.75 | 综合管理
+[id=J40613 | 岗位任务集 4 任务 | 功能模块数 3]
+  t18853 | Analyze employment-related data and prepare required reports. | E2高 | 可编码0.50 语境0.50 | 人力资源
+  t16989 | Monitor raw data quality during collection, and make equipment corrections as necessary. | E2高 | 可编码0.50 语境0.75 | 质量检验
+  t21833 | Identify solutions to business problems, such as budgeting, staffing, and marketing decis… | E2高 | 可编码0.50 语境0.25 | IT数据
+  t5461 | Collect and analyze data to evaluate the effectiveness of academic programs and other ser… | E2高 | 可编码na 语境na | nan
+[id=J42354 | 岗位任务集 6 任务 | 功能模块数 3]
+  t15430 | Monitor performance of quality control systems to ensure effectiveness and efficiency. | E2高 | 可编码0.50 语境0.50 | 质量检验
+  t16957 | Serve as a technical liaison between quality control and other departments, vendors, or c… | E2高 | 可编码0.00 语境0.50 | 质量检验
+  t8860 | Conduct or coordinate audits of company accounts and financial transactions to ensure com… | E2高 | 可编码0.50 语境0.75 | 财务会计
+  t9706 | Implement corporate or departmental policies, procedures, and service standards in conjun… | E2高 | 可编码0.50 语境0.50 | 综合管理
+  t7282 | Document findings of study and prepare recommendations for implementation of new systems,… | E2高 | 可编码0.50 语境0.25 | 综合管理
+  t15427 | Communicate quality control information to all relevant organizational departments, outsi… | E2高 | 可编码0.50 语境0.75 | 质量检验
+[id=J42982 | 岗位任务集 9 任务 | 功能模块数 7]
+  t1509 | Direct, coordinate, or advise personnel in test procedures for analyzing components or ph… | E2高 | 可编码0.00 语境1.00 | 研发技术
+  t11199 | Establish and enforce operating procedures and work standards that will ensure adequate p… | E0低 | 可编码0.00 语境0.75 | 综合管理
+  t7172 | Fill out defective equipment reports. | E1中 | 可编码1.00 语境0.00 | 设备维护
+  t347 | Complete and maintain necessary records. | E1中 | 可编码1.00 语境0.00 | 行政法务
+  t17401 | Document specimens by verifying patients' and specimens' information. | E1中 | 可编码1.00 语境0.25 | 其他
+  t21930 | Supervise or conduct field surveys, inspections, or technical investigations to obtain da… | E2高 | 可编码0.00 语境1.00 | 工艺工程
+  t1892 | Set up, clean, and maintain laboratory equipment. | E0低 | 可编码0.50 语境0.25 | 设备维护
+  t1117 | Prepare required paperwork pertaining to departmental functions. | E1中 | 可编码1.00 语境0.00 | 行政法务
+  t16608 | Analyze test data for automotive systems, subsystems, or component parts. | E2高 | 可编码0.50 语境0.25 | 质量检验
+[id=J42915 | 岗位任务集 8 任务 | 功能模块数 4]
+  t11198 | Load or unload trucks that deliver or pick up food or supplies. | E0低 | 可编码na 语境na | nan
+  t4591 | Consult with company officials, sales departments, and advertising agencies to develop pr… | E2高 | 可编码0.00 语境0.50 | 市场
+  t4677 | Establish new computer accounts. | E1中 | 可编码na 语境na | nan
+  t21151 | Greet customers and make them feel welcome. | E0低 | 可编码0.50 语境0.25 | 客户服务
+  t18611 | Develop new food items for production, based on consumer feedback. | E2高 | 可编码0.50 语境0.50 | 研发技术
+  t9696 | Develop sales plans to introduce products in new markets. | E2高 | 可编码0.50 语境0.25 | 销售
+  t8467 | Plan and develop new products and production processes. | E2高 | 可编码0.00 语境0.75 | 研发技术
+  t5112 | Manage inventory or sale of artist merchandise. | E1中 | 可编码na 语境na | nan
+[id=J42398 | 岗位任务集 5 任务 | 功能模块数 4]
+  t3899 | Supervise and assign duties to workers engaged in technical control and production of rad… | E2高 | 可编码0.00 语境1.00 | 生产执行
+  t23951 | Post and update content on the company's Web site and social media outlets. | E1中 | 可编码0.50 语境0.00 | 市场
+  t16140 | Manage timely flow of business intelligence information to users. | E2高 | 可编码0.50 语境0.25 | IT数据
+  t1782 | Develop story or content ideas, considering reader or audience appeal. | E1中 | 可编码na 语境na | nan
+  t16776 | Recommend new systems and processes to improve operations. | E2高 | 可编码0.50 语境0.25 | 综合管理
+[id=J38588 | 岗位任务集 5 任务 | 功能模块数 3]
+  t2493 | Code documents according to company procedures. | E1中 | 可编码1.00 语境0.00 | 行政法务
+  t5300 | Process individual and corporate income tax returns, and sales and excise tax returns. | E2高 | 可编码1.00 语境0.25 | 财务会计
+  t8874 | Perform tax planning work. | E2高 | 可编码0.50 语境0.50 | 财务会计
+  t1109 | Confer and cooperate with other managers to ensure coordination of hotel activities. | E0低 | 可编码0.00 语境0.75 | 综合管理
+  t5289 | Maintain knowledge of tax code changes, and of accounting procedures and theory to proper… | E2高 | 可编码0.50 语境0.50 | 财务会计
+[id=J42595 | 岗位任务集 6 任务 | 功能模块数 2]
+  t15380 | Develop, or oversee the development of, marketing or outreach media for sustainability pr… | E2高 | 可编码0.50 语境0.50 | 市场
+  t13223 | Promote products and services in television commercials, on film, or in videos. | E2高 | 可编码0.00 语境0.25 | 市场
+  t6893 | Participate in design and production of multimedia campaigns, handling budgeting and sche… | E2高 | 可编码0.50 语境0.50 | 市场
+  t3242 | Coordinate with the media to disseminate advertising. | E2高 | 可编码0.50 语境0.50 | 市场
+  t3233 | Monitor and analyze sales promotion results to determine cost effectiveness of promotion … | E2高 | 可编码1.00 语境0.25 | 市场
+  t20318 | Assist in setting up or optimizing analytics tools for tracking visitors' behaviors. | E2高 | 可编码0.50 语境0.50 | IT数据
+[id=J40676 | 岗位任务集 3 任务 | 功能模块数 2]
+  t15864 | Direct the work of logistics analysts. | E2高 | 可编码0.00 语境0.75 | 综合管理
+  t11140 | Determine production schedules and staff requirements necessary to ensure timely delivery… | E2高 | 可编码0.50 语境0.75 | 生产执行
+  t21334 | Implement operational and emergency procedures. | E2高 | 可编码0.50 语境0.75 | 生产执行
+[id=J42546 | 岗位任务集 8 任务 | 功能模块数 5]
+  t21381 | Coordinate clerical, record-keeping, inventory, requisitioning, and marketing activities. | E2高 | 可编码0.00 语境0.50 | 综合管理
+  t961 | Coordinate or participate in promotional activities or trade shows, working with develope… | E2高 | 可编码0.00 语境0.75 | 市场
+  t20709 | Formulate, direct, or coordinate marketing activities or policies to promote products or … | E2高 | 可编码0.00 语境0.75 | 市场
+  t22658 | Conduct research and interviews to determine which of a product's selling features should… | E2高 | 可编码0.50 语境0.50 | 市场
+  t2537 | Prepare, maintain, and review purchasing files, reports and price lists. | E2高 | 可编码1.00 语境0.00 | 采购供应链
+  t4485 | Set up various apparatus or athletic equipment. | E0低 | 可编码0.00 语境0.25 | 其他
+  t23289 | Train other workers or coordinate their work, as necessary. | E0低 | 可编码0.50 语境0.50 | 综合管理
+  t2770 | Manage and maintain executives' schedules. | E2高 | 可编码0.50 语境0.25 | 行政法务
+[id=J30346 | 岗位任务集 6 任务 | 功能模块数 4]
+  t20480 | Direct activities of technicians engaged in preparing drawings or specification documents. | E1中 | 可编码0.00 语境0.75 | 研发技术
+  t13785 | Replace motors. | E0低 | 可编码0.00 语境0.25 | 设备维护
+  t1419 | Oversee installation, operation, maintenance, or repair to ensure that machines or equipm… | E0低 | 可编码0.00 语境1.00 | 设备维护
+  t1329 | Analyze equipment performance records to determine the need for repair or replacement. | E1中 | 可编码1.00 语境0.25 | 设备维护
+  t21989 | Compile and maintain records documenting engineering schematics, installed equipment, ins… | E1中 | 可编码1.00 语境0.00 | 行政法务
+  t3584 | Assist engineering and other personnel to solve operating problems. | E2高 | 可编码0.00 语境0.75 | 工艺工程
+[id=J41198 | 岗位任务集 4 任务 | 功能模块数 2]
+  t10685 | Perform routine repair and maintenance duties. | E0低 | 可编码0.50 语境0.25 | 设备维护
+  t20340 | Direct and supervise construction or related workers. | E0低 | 可编码0.00 语境1.00 | 生产执行
+  t12574 | Maintain processing, production, and inspection information and reports. | E1中 | 可编码1.00 语境0.00 | 生产执行
+  t21278 | Oversee the maintenance and repair of machinery, equipment, and electrical and mechanical… | E0低 | 可编码0.50 语境1.00 | 设备维护
+[id=J44592 | 岗位任务集 6 任务 | 功能模块数 5]
+  t3112 | Confer with engineering, supervisory, or manufacturing personnel to exchange technical in… | E1中 | 可编码0.50 语境0.25 | 工艺工程
+  t21923 | Supervise and train other technologists, technicians, and drafters. | E0低 | 可编码na 语境na | nan
+  t20785 | Train and supervise subordinates and other staff. | E0低 | 可编码0.00 语境1.00 | 综合管理
+  t17603 | Assess employee performance and suggest ways to improve work. | E2高 | 可编码0.00 语境0.50 | 人力资源
+  t14308 | Operate control panels to coordinate and regulate process variables such as temperature a… | E0低 | 可编码0.00 语境0.75 | 生产执行
+  t20741 | Provide technical customer service. | E2高 | 可编码0.50 语境0.50 | 客户服务
+[id=J42728 | 岗位任务集 3 任务 | 功能模块数 3]
+  t16466 | Oversee the work of contractors in accordance with project requirements. | E0低 | 可编码0.00 语境1.00 | 采购供应链
+  t23289 | Train other workers or coordinate their work, as necessary. | E0低 | 可编码0.50 语境0.50 | 综合管理
+  t23738 | Drive shuttle busses, limousines, company cars, or privately owned vehicles to transport … | E0低 | 可编码0.00 语境0.50 | 其他
+[id=J23637 | 岗位任务集 6 任务 | 功能模块数 2]
+  t18608 | Coordinate and implement quality control objectives, activities, or procedures to resolve… | E2高 | 可编码0.50 语境1.00 | 质量检验
+  t3327 | Develop or implement quality control programs. | E2高 | 可编码0.50 语境0.75 | 质量检验
+  t15410 | Coordinate the selection and implementation of quality control equipment, such as inspect… | E2高 | 可编码0.50 语境0.75 | 质量检验
+  t9001 | Analyze product failure data and laboratory test results to determine causes of problems … | E2高 | 可编码0.00 语境0.25 | 质量检验
+  t20163 | Supervise assemblers and train employees on job procedures. | E0低 | 可编码0.00 语境1.00 | 生产执行
+  t14649 | Develop or specify standards, methods, or procedures to determine product quality or rele… | E1中 | 可编码0.50 语境0.50 | 质量检验
+[id=J43709 | 岗位任务集 2 任务 | 功能模块数 1]
+  t1106 | Assign duties to workers, and schedule shifts. | E2高 | 可编码0.50 语境0.50 | 综合管理
+  t574 | Prepare work schedules and assign duties to subordinates. | E2高 | 可编码0.50 语境0.75 | 综合管理
+[id=J44220 | 岗位任务集 3 任务 | 功能模块数 1]
+  t21332 | Conduct site audits to ensure adherence to safety and environmental regulations. | E2高 | 可编码0.50 语境0.75 | EHS安全
+  t1756 | Explain and enforce safety rules and regulations. | E0低 | 可编码0.50 语境1.00 | EHS安全
+  t10606 | Rescue and evacuate injured persons. | E0低 | 可编码0.00 语境0.75 | EHS安全
+[id=J41127 | 岗位任务集 4 任务 | 功能模块数 4]
+  t18598 | Oversee facilities management for the university, including construction, repair, and mai… | E2高 | 可编码0.00 语境0.75 | 综合管理
+  t4532 | Perform office duties on a temporary basis when needed. | E1中 | 可编码0.50 语境0.00 | 行政法务
+  t9693 | Attend company training seminars to become familiar with product lines. | E1中 | 可编码0.50 语境0.00 | 销售
+  t5248 | Teach courses within their department. | E1中 | 可编码0.00 语境0.75 | 其他
+[id=J40533 | 岗位任务集 7 任务 | 功能模块数 5]
+  t2150 | Assign duties, responsibilities, and work stations to employees in accordance with work r… | E1中 | 可编码0.50 语境0.50 | 综合管理
+  t1289 | Confer with staff, users, and management to establish requirements for new systems or mod… | E2高 | 可编码0.50 语境0.50 | IT数据
+  t14646 | Participate in product design reviews to provide input on functional requirements, produc… | E2高 | 可编码0.50 语境0.50 | 研发技术
+  t3366 | Assess need for and develop job analysis instruments and materials. | E2高 | 可编码0.50 语境0.50 | 人力资源
+  t15982 | Prepare requirements documentation for use by software developers. | E1中 | 可编码0.50 语境0.25 | IT数据
+  t10869 | Coordinate, monitor, or revise complaint procedures to ensure timely processing and revie… | E2高 | 可编码0.50 语境0.75 | 客户服务
+  t14629 | Conduct logical analyses of business, scientific, engineering, and other technical proble… | E1中 | 可编码0.50 语境0.25 | IT数据
