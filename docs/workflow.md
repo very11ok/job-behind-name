@@ -1,7 +1,10 @@
-# 工作流详细说明：三准则「前因→后果」条件概率检验
+# 工作流详细说明：三准则「前因→后果」条件概率检验与修复
 
 本文档说明整个流水线每一步做了什么、输入输出是什么、脚本之间如何衔接。
-脚本在 `scripts/` 目录下，不含任何数据文件。
+脚本在 `scripts/` 目录下；第一轮判定所用数据与判定输入在 `data/` 目录下。
+
+> 状态说明：§0–§7 描述第一轮判定的原版协议与流程（judge_input/judge_output 按此生成）。
+> 第一轮结果中准则 b 反向、准则 c 空壳，两者的修复与复核见 §9。
 
 ---
 
@@ -29,16 +32,17 @@
 
 ## 1. 数据前提
 
-流水线依赖以下外部数据（均不在本仓库中）：
+流水线依赖以下数据，全部在本仓库 `data/` 目录下：
 
-- **任务字典**：每个任务的文本描述、暴露等级（E0-E2）、可编码度（codable）、
-  语境嵌入度（ctx）、层级（hierarchy）、功能模块（module）
-- **岗位快照**：每年每个岗位包含的任务列表（job → tasks）
-- **任务共现网络**：任务间的共现边，用于构建投影层
-- **企业面板**：每年每家企业的岗位列表
-- **模板相似度**：每个岗位的 struct_sim / xfirm_sim / surf_sim 三个相似度数值
+- **任务字典** `data/snapshots/task_dict.parquet`：每个任务的文本描述、
+  知识强度 E（E_ord 1–5）、可编码度（codable）、语境嵌入度（ctx）、
+  层级（hierarchy）、功能模块（module）
+- **岗位快照** `data/snapshots/jobs_YYYY.parquet`（2016–2026）：每年每个岗位的任务列表（job → tasks）
+- **任务对面板** `data/pairs/pairs_YYYY.parquet`（2018–2025）：任务对特征与绑定标签
+- **企业面板** `data/results/firm_year_jobs.parquet`：每年每家企业的岗位列表
+- **模板相似度** `data/results/rule_c_adoption.parquet`：每个岗位的 struct_sim / xfirm_sim / surf_sim
 
-这些数据通过 `jtagent` 包的接口加载（`P.load_jobs`、`P.load_edges`、
+这些数据由 `scripts/jtagent/` 包的接口加载（`P.load_jobs`、`P.load_edges`、
 `P.build_projection`、`firm_panel.build_firm_year_jobs` 等）。
 
 ---
@@ -97,8 +101,10 @@
 
 ### 准则二后果：`split`
 
-- 定义：该任务团在 T+h 年分裂为 ≥2 个更窄岗位，分别承载团的一部分
-- 判定方式：T+h 年的任务团核心任务不再全部共现于同一岗位
+- 定义：该任务团在 T+h 年被 ≥2 个更窄岗位分别承载，且承载岗位对团内任务的
+  并集覆盖 ≥60%（`outcomes.py` 的实现：holders = 任务重合 ≥2 且任务数小于团规模的 T+h 岗位）
+- 修复后新增方向性后果 `down_std`：在 split 的基础上，要求各承载岗位任务集的
+  E_ord 标准差均值低于原团——拆出的新岗位比原团更"纯"。实现见 `scripts/verify_g2_direction.py`
 
 ### 准则三后果：`above_median`
 
@@ -170,7 +176,7 @@ xfirm_sim，即措辞像流行模板但任务结构并未真正同构。
 
 ### 工作流脚本
 
-脚本文件：`scripts/judge_workflow.dwf.ts`（原路径 `.zcode/workflow-drafts/三准则前因判定.dwf.ts`）
+脚本文件：`scripts/workflow/pipeline.dwf.ts`（原始路径 `.zcode/workflow-drafts/三准则前因判定.dwf.ts`）
 
 ### 执行逻辑
 
@@ -267,7 +273,7 @@ p 档越高，实际后果率应越高，否则说明 LLM 的校准偏差。
 
 ---
 
-## 7. 流水线衔接图
+## 7. 流水线衔接图（第一轮）
 
 ```
 objects.py          →  g1_jobs / g2_comm / g3_firms parquet
@@ -276,12 +282,12 @@ outcomes.py         →  labels_g1 / g2 / g3 parquet（T+1/2/3 后果标签）
       ↓
 prep_judge_input.py →  judge_input/*.txt（66 批，含判定协议）
       ↓
-judge_workflow.dwf.ts →  judge_output/*.json（66 批 LLM 判定）
+workflow/pipeline.dwf.ts →  judge_output/*.json（66 批 LLM 判定）
       ↓
 merge_judge.py      →  judge_g* parquet + antecedent_outcome_2020.md
 ```
 
-对齐键贯穿全程：job / seed / firm。
+第一轮结论：a 成立（2.38/3.00/2.57）；b 反向（0.57/0.56/0.49）；c 空壳。进入 §9 修复。
 
 ---
 
@@ -289,9 +295,86 @@ merge_judge.py      →  judge_g* parquet + antecedent_outcome_2020.md
 
 1. 所有脚本硬编码路径为 `D:\harness office\research\jobtask-agent\`，
    迁移到其他环境需修改 `BASE` / `OUT` / `OBJ` 等路径变量
-2. `objects.py` 依赖 `jtagent` 包（`pairs`、`attrs`、`firm_panel` 模块），
-   该包不在公开仓库中
+2. `objects.py` 依赖 `scripts/jtagent/` 包（`pairs`、`attrs`、`firm_panel` 模块）
 3. LLM 判定工作流依赖 ZCode 的动态工作流功能（dynamic workflow），
    需在 ZCode 环境中运行
 4. 后果标签依赖历史年份的任务网络快照（构建 T+h 对照需要 T 年之后的数据）
 5. 概率档位 p 仅 7 档，精度有限；如需更细的校准可扩展档位或改为连续值
+
+---
+
+## 9. 修复与复核阶段（第一轮之后）
+
+第一轮暴露出 b 反向、c 空壳两个问题。修复按"诊断 → 重定义 → 验证 → 独立复核"四步完成，
+全部脚本入库，每一步的数字都有结果文档对应。
+
+### 9.1 诊断（为什么反向/空壳）
+
+- `scripts/reverse_outcome.py`：反向概率表——后果发生时前因是否更可能成立
+- `scripts/diagnose_g2.py`：b 的反向关系归因。对 holds 分组比较团特征：
+  holds=1 的团平均 4.99 个任务、hier_n 均值 1.92；holds=0 的团 6.38 个任务、hier_n 2.65。
+  "判定成立"筛选出的是更小、更难整体拆的团——反向关系来自混淆结构而非机制错误
+- `scripts/diagnose_g3.py`：c 的空壳确认。成立率 82.5%、p 档与实测后果无单调关系，
+  收紧判定口径也无法恢复区分度
+
+### 9.2 准则 b：门槛扫描 + 方向性重构
+
+**门槛扫描**（`scripts/scan_g2_threshold.py` → `docs/results/g2_threshold_scan.md`）：
+在 size / hier_n / n_mod / e2_share 四个候选门槛上扫描单变量与联合切分，
+hier_n≥3 为最优——该门槛下提升比从 0.55 跳到 1.68，反向关系消失。
+
+**门槛版验证**（`scripts/verify_g2_fix.py` → `docs/results/g2_fix_verify.md`）：
+新前因 holds∧hier_n≥3（n1=49）的提升比 2.34/2.59/2.49，反向提升比 5.67/4.78/3.80，
+卡方 p<7.3e-07（三个窗口）。
+
+**方向性重构**（`scripts/verify_g2_direction.py` → `docs/results/g2_direction_verify.md`）：
+按 Garicano 原义把后果从"是否分裂"改为"往哪个方向拆"：
+
+- 前因 asym：团内任务 E_ord 的标准差（知识不对称度，中位数二分）——不依赖 LLM
+- 后果 down_std：split 且各承载岗位任务集 E_ord 标准差均值低于原团
+- 结果：提升比 1.56/1.40/1.29，三窗口全显著（p=4.6e-06/0.003/0.038）
+- 原反向之谜由此解开：高不对称团更大更复杂、整体被拆概率反而低（原 split 判据下 0.77/0.74/0.67），
+  但拆出方向与理论一致
+- 附带发现 down_e 提升比 0.25（强反向）：拆出窄岗的平均知识强度更高——
+  实际机制是知识密集任务剥离成专家岗（知识层从执行层剥离），而非"例程下沉"
+- 叠加判据 holds∧hier_n≥3∧asym_high：提升比 3.36/2.74/2.73（n=15，上限证据）
+
+### 9.3 准则 c：客观前因替换
+
+**指标扫描**（`scripts/scan_g3_metrics.py` → `docs/results/g3_metric_scan.md`）：
+对 9 个客观结构指标做中位数二分与 Spearman 排序力检验，与 LLM holds 基线对照：
+
+| 指标 | h=1 | h=2 | h=3 | 显著性 |
+|------|-----|-----|-----|--------|
+| n_jobs | 2.57 | 2.51 | 1.90 | h=1/2 强显著 |
+| n_mod | 2.06 | 2.49 | 2.70 | 三窗口显著 |
+| surf_sim | 0.80 | 0.95 | 0.62 | 全反向 |
+| struct_sim | 1.60 | 1.07 | 1.19 | 无稳定信号 |
+| LLM holds（对照） | 1.27 | 1.72 | 0.98 | 全不显著 |
+
+**修复验证**（`scripts/verify_g3_fix.py` → `docs/results/g3_fix_verify.md`）：
+前因取 n_jobs/n_mod 中位数二分，组合前因 n_jobs高∧n_mod高 提升比 2.98/3.26/3.06
+（p=8.0e-06/2.6e-05/0.0015），反向提升比 1.93/1.98/1.74。注：adopt_share 连续均值
+在企业层面零膨胀（分母小），方向以二元标签 above_median 为准。
+
+### 9.4 独立复核
+
+`scripts/recheck_results.py` / `scripts/recheck_g2fix.py`：18 组关键检验
+用 `scipy.stats.chi2_contingency`（correction=False）独立重算，
+与手写两比例 z / 2×2 卡方公式逐位吻合；样本量与 NaN 检查一并核对。
+
+### 9.5 修复后衔接图
+
+```
+diagnose_g2.py / diagnose_g3.py          （定位：混淆结构 / 空壳）
+      ↓
+scan_g2_threshold.py → verify_g2_fix.py          b 门槛版
+      ↓
+verify_g2_direction.py                           b 方向版（前因客观化）
+      ↓
+scan_g3_metrics.py → verify_g3_fix.py            c 客观前因版
+      ↓
+recheck_results.py / recheck_g2fix.py            scipy 独立复核
+      ↓
+三准则全部成立（README「核心结果」表）
+```
