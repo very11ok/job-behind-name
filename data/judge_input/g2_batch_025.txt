@@ -1,0 +1,23 @@
+【判定协议 · 准则(b) 层级解绑 —— 前因判定】
+单元：一个任务团（任务投影层上以某核心任务为中心的强邻域，T=2020）。
+前因定义：团内任务满足——
+  ① 同层级：hierarchy（L0例行执行/L1标准解题/L2跨职能协调/L3战略判断）高度集中；
+  ② 可编码为主：codability（可编码度）总体高，多数任务规则明确；
+  ③ 功能凝聚：模块集中，任务性质均质——整团可被"知识下沉"切进更窄的新岗位。
+三点基本满足 holds=1；层级混杂或大量语境嵌入任务则 holds=0。
+p 的含义：给定 2020 年信息，你估计该团在 2021-2023 年「分裂为 ≥2 个更窄岗位、分别承载团的一部分」的概率。
+
+【输出】严格 JSON 数组，每个元素对应输入中一个对象块，顺序一致，不输出任何其他文字：
+[{"id":"<对象id>","holds":<0|1>,"p":<0..1>,"why":"<≤30字中文依据>"}]
+- id 照抄对象块第一行方括号里的 id。
+- p 给档位即可：0.05（几乎不可能）/0.1/0.2/0.3/0.5/0.7/0.9。
+[id=23948 | 任务团 3 任务 | E2占比 0.67 | 层级数 1 | 模块数 2]
+  t23948 | Determine the feasibility, costs, or performance benefits of new mechatronic equipment. | E2高 | 可编码0.50 | L2 | 研发技术
+  t14629 | Conduct logical analyses of business, scientific, engineering, and other technical proble… | E1中 | 可编码0.50 | L2 | IT数据
+  t19622 | Research or develop electronics technologies for use in electric-drive vehicles. | E2高 | 可编码0.50 | L2 | 研发技术
+[id=23951 | 任务团 5 任务 | E2占比 0.60 | 层级数 3 | 模块数 3]
+  t23951 | Post and update content on the company's Web site and social media outlets. | E1中 | 可编码0.50 | L1 | 市场
+  t5679 | Perform administrative duties, such as serving as department head. | E2高 | 可编码0.00 | L2 | 综合管理
+  t21610 | Contribute to development of risk management systems. | E2高 | 可编码0.50 | L2 | 综合管理
+  t9722 | Participate in the work of subordinates to facilitate productivity or to overcome difficu… | E0低 | 可编码0.00 | L2 | 综合管理
+  t10993 | Maintain portfolios of artistic work to demonstrate styles, interests, and abilities. | E2高 | 可编码0.50 | L0 | 其他
