@@ -41,6 +41,8 @@
 - `scripts/verify_g2_direction.py` — 原则二方向性修复验证（asym → down_std）
 - `docs/g3_metric_scan.md` — g3 指标扫描结果：LLM 判定空壳、客观指标有效
 - `docs/g2_direction_verify.md` — 原则二方向性结果：不对称度前因提升比 1.56/1.40/1.29
+- `scripts/verify_g3_fix.py` — 原则三修复验证：客观规模前因（n_jobs/n_mod 组合）→ 模板采纳
+- `docs/g3_fix_verify.md` — 原则三结果：组合前因提升比 2.98/3.26/3.06 全显著
 - `docs/workflow.md` — 完整工作流详细说明
 - `docs/reverse_outcome_antecedent_2020.md` — 反向概率表结果
 - `docs/diagnose_g2_g3.md` — g2/g3 诊断报告
