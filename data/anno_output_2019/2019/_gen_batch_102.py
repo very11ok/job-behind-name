@@ -1,0 +1,58 @@
+import json, os
+
+rows = [
+{"id":21323,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":0,"hierarchy":"L3","module":"财务会计"},
+{"id":9307,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L1","module":"采购供应链"},
+{"id":11628,"codability":1,"judgment":1,"coordination":0,"accountability":1,"embodied":0,"hierarchy":"L1","module":"质量检验"},
+{"id":20286,"codability":1,"judgment":0,"coordination":0,"accountability":1,"embodied":0,"hierarchy":"L0","module":"财务会计"},
+{"id":9404,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L1","module":"其他"},
+{"id":21311,"codability":0,"judgment":1,"coordination":1,"accountability":0,"embodied":1,"hierarchy":"L1","module":"客户服务"},
+{"id":14087,"codability":0,"judgment":1,"coordination":0,"accountability":0,"embodied":1,"hierarchy":"L1","module":"生产执行"},
+{"id":15468,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"生产执行"},
+{"id":19927,"codability":0,"judgment":1,"coordination":0,"accountability":1,"embodied":1,"hierarchy":"L0","module":"EHS安全"},
+{"id":3073,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":0,"hierarchy":"L2","module":"采购供应链"},
+{"id":12797,"codability":0,"judgment":1,"coordination":0,"accountability":1,"embodied":1,"hierarchy":"L0","module":"物流仓储"},
+{"id":18570,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":0,"hierarchy":"L2","module":"综合管理"},
+{"id":17236,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"EHS安全"},
+{"id":20743,"codability":1,"judgment":0,"coordination":0,"accountability":0,"embodied":0,"hierarchy":"L0","module":"质量检验"},
+{"id":7539,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":0,"hierarchy":"L3","module":"市场"},
+{"id":21406,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"人力资源"},
+{"id":13964,"codability":1,"judgment":0,"coordination":0,"accountability":0,"embodied":1,"hierarchy":"L0","module":"生产执行"},
+{"id":699,"codability":0,"judgment":1,"coordination":0,"accountability":1,"embodied":1,"hierarchy":"L0","module":"EHS安全"},
+{"id":566,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L3","module":"行政法务"},
+{"id":9692,"codability":1,"judgment":1,"coordination":0,"accountability":0,"embodied":0,"hierarchy":"L1","module":"市场"},
+{"id":18085,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L1","module":"生产执行"},
+{"id":4616,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"销售"},
+{"id":21888,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"综合管理"},
+{"id":20374,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"研发技术"},
+{"id":22929,"codability":1,"judgment":0,"coordination":0,"accountability":0,"embodied":0,"hierarchy":"L0","module":"行政法务"},
+{"id":21780,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":0,"hierarchy":"L2","module":"IT数据"},
+{"id":1511,"codability":1,"judgment":1,"coordination":0,"accountability":1,"embodied":0,"hierarchy":"L2","module":"研发技术"},
+{"id":12265,"codability":1,"judgment":0,"coordination":0,"accountability":0,"embodied":1,"hierarchy":"L0","module":"EHS安全"},
+{"id":10066,"codability":1,"judgment":0,"coordination":0,"accountability":1,"embodied":1,"hierarchy":"L0","module":"质量检验"},
+{"id":1423,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L3","module":"生产执行"},
+{"id":15228,"codability":2,"judgment":0,"coordination":0,"accountability":0,"embodied":0,"hierarchy":"L0","module":"行政法务"},
+{"id":2313,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":0,"hierarchy":"L1","module":"市场"},
+{"id":7378,"codability":0,"judgment":1,"coordination":1,"accountability":0,"embodied":0,"hierarchy":"L2","module":"综合管理"},
+{"id":14560,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L1","module":"设备维护"},
+{"id":7067,"codability":1,"judgment":0,"coordination":0,"accountability":0,"embodied":1,"hierarchy":"L0","module":"生产执行"},
+{"id":21101,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":0,"hierarchy":"L1","module":"IT数据"},
+{"id":19013,"codability":1,"judgment":1,"coordination":0,"accountability":1,"embodied":1,"hierarchy":"L0","module":"质量检验"},
+{"id":15963,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":0,"hierarchy":"L3","module":"综合管理"},
+{"id":138,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"行政法务"},
+{"id":22229,"codability":1,"judgment":1,"coordination":0,"accountability":0,"embodied":0,"hierarchy":"L1","module":"其他"},
+{"id":10647,"codability":1,"judgment":0,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L0","module":"物流仓储"},
+{"id":1118,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"人力资源"},
+{"id":1288,"codability":0,"judgment":1,"coordination":1,"accountability":0,"embodied":1,"hierarchy":"L1","module":"IT数据"},
+{"id":15258,"codability":1,"judgment":0,"coordination":1,"accountability":0,"embodied":1,"hierarchy":"L0","module":"人力资源"},
+{"id":23194,"codability":0,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L2","module":"销售"},
+{"id":4240,"codability":1,"judgment":0,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L0","module":"其他"},
+{"id":17907,"codability":2,"judgment":0,"coordination":0,"accountability":0,"embodied":1,"hierarchy":"L0","module":"物流仓储"},
+{"id":22316,"codability":1,"judgment":1,"coordination":1,"accountability":1,"embodied":1,"hierarchy":"L1","module":"设备维护"},
+]
+
+out = r"D:\harness office\research\jobtask-agent\out\anno_output\2019\batch_102.json"
+os.makedirs(os.path.dirname(out), exist_ok=True)
+with open(out, "w", encoding="utf-8", newline="\n") as f:
+    json.dump(rows, f, ensure_ascii=False, indent=None, separators=(",", ":"))
+print("wrote", len(rows))
