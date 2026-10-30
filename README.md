@@ -41,7 +41,7 @@
 │   └── workflow/pipeline.dwf.ts     66 批 LLM 前因判定的 dynamic workflow 脚本
 └── data/
     ├── snapshots/                   任务网络年度快照（2016–2026，23 个 parquet）
-    ├── pairs/                       任务对相似度年度面板（2018–2025，9 个 parquet，约 331MB）
+    ├── pairs/                       任务对相似度年度面板（2018–2025，13 个 parquet，约 376MB）
     ├── objects/                     三准则对象池 + 后果标签 + LLM 前因判定（9 个 parquet）
     ├── results/                     全部结果表（csv/parquet）
     ├── judge_input/                 66 批 LLM 前因判定输入（PROTO 协议文本）
@@ -61,6 +61,8 @@
 ### data/pairs/（任务对相似度面板，2018–2025）
 
 `pairs_YYYY.parquet`：任务对 `ti, tj` 及特征——共邻数 `cn`、度 `deg_*`、优先连接 `pa`、Jaccard、知识强度 `E_ord_*`、上下文 `ctx_*`、可编码度 `codable_*`、模块归属 `module_*`、知识差 `E_gap`；`y`/`y_new` 绑定延续/新增标签；`bind_TM1` 上年绑定。用途：准则 a/b 任务对层面的预测底料。由 `scripts/jtagent/pairs.py` 从 snapshots 重算。
+
+> 文件拆分说明：GitHub 单文件限制约 40MB，2019/2020/2023 年为完整单文件；2018/2021/2022/2024/2025 年按行对半拆为 `_part1/_part2`（各 250 万行），读取时 `pd.concat([pd.read_parquet(p1), pd.read_parquet(p2)])` 即可无损还原。拆分脚本：`scripts/split_pairs.py`。
 
 ### data/objects/（三准则对象池，T=2020）
 
