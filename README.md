@@ -37,6 +37,10 @@
   - `diagnose_g3.py` — g3 空壳诊断（p 档排序力 + 前因收紧实验）
   - `scan_g2_threshold.py` — g2 门槛扫描（找 hier_n 最优切分点）
   - `verify_g2_fix.py` — g2 修复验证（新前因定义下的条件概率）
+- `scripts/scan_g3_metrics.py` — g3 客观结构指标扫描（n_jobs/n_mod 最优）
+- `scripts/verify_g2_direction.py` — 原则二方向性修复验证（asym → down_std）
+- `docs/g3_metric_scan.md` — g3 指标扫描结果：LLM 判定空壳、客观指标有效
+- `docs/g2_direction_verify.md` — 原则二方向性结果：不对称度前因提升比 1.56/1.40/1.29
 - `docs/workflow.md` — 完整工作流详细说明
 - `docs/reverse_outcome_antecedent_2020.md` — 反向概率表结果
 - `docs/diagnose_g2_g3.md` — g2/g3 诊断报告
